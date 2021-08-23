@@ -14,16 +14,49 @@ class HeroDetailScreen extends StatelessWidget {
       if (constraints.maxWidth > 600) {
         return HeroDetailWeb();
       } else {
-        return HeroDetailMobile();
+        return HeroDetailMobile(hero: hero);
       }
     });
   }
 }
 
 class HeroDetailMobile extends StatelessWidget {
+  final Heroes hero;
+
+  HeroDetailMobile({required this.hero});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Image.asset(hero.imageAsset),
+            SafeArea(
+                child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CircleAvatar(
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ))
+          ],
+        ),
+      ),
+    );
   }
 }
 

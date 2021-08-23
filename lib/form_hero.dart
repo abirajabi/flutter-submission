@@ -32,6 +32,8 @@ class NewHeroForm extends StatefulWidget {
 
 class NewHeroState extends State<NewHeroForm> {
   final _formKey = GlobalKey<FormState>();
+  List<String> _urls = [];
+
   TextEditingController txtHeroName = TextEditingController();
   String heroMainAttr = 'Strength';
   TextEditingController txtHeroBaseStr = TextEditingController();
@@ -42,6 +44,7 @@ class NewHeroState extends State<NewHeroForm> {
   TextEditingController txtHeroGainInt = TextEditingController();
   TextEditingController txtImageAsset = TextEditingController();
   TextEditingController txtImageUrls = TextEditingController();
+  TextEditingController txtHeroDesc = TextEditingController();
 
   @override
   void dispose() {
@@ -54,6 +57,7 @@ class NewHeroState extends State<NewHeroForm> {
     txtHeroGainInt.dispose();
     txtImageAsset.dispose();
     txtImageUrls.dispose();
+    txtHeroDesc.dispose();
     super.dispose();
   }
 
@@ -186,6 +190,55 @@ class NewHeroState extends State<NewHeroForm> {
                 decoration: InputDecoration(
                     hintText: 'Gain intelligence', labelText: 'Gain INT'),
               ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: txtHeroDesc,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Hero lore required';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                    hintText: 'Hero description', labelText: 'Hero Lore'),
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: txtImageAsset,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Hero asset required';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                    hintText: 'Hero image in the asset folder',
+                    labelText: 'Hero image'),
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: txtImageUrls,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Hero assets required';
+                  }
+                  return null;
+                },
+                onFieldSubmitted: (text) {
+                  setState(() {
+                    _urls.add(text);
+                    txtImageUrls.clear();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                        'Url added',
+                      ),
+                    ));
+                  });
+                },
+                decoration: InputDecoration(
+                    hintText: 'Hero image using link address',
+                    labelText: 'Hero abilities image'),
+              ),
               ElevatedButton(
                   style: ButtonStyle(backgroundColor:
                       MaterialStateProperty.resolveWith<Color>(
@@ -200,7 +253,19 @@ class NewHeroState extends State<NewHeroForm> {
                         ),
                       ));
                       // add new record to hero list
-
+                      Heroes newHero = Heroes(
+                          name: txtHeroName.text,
+                          mainAttr: heroMainAttr,
+                          strBase: double.parse(txtHeroBaseStr.text),
+                          strGain: double.parse(txtHeroGainStr.text),
+                          agiBase: double.parse(txtHeroBaseAgi.text),
+                          agiGain: double.parse(txtHeroGainAgi.text),
+                          intBase: double.parse(txtHeroBaseInt.text),
+                          intGain: double.parse(txtHeroGainInt.text),
+                          imageAsset: txtImageAsset.text,
+                          imageUrls: _urls,
+                          description: txtHeroDesc.text);
+                      allHeroesList.add(newHero);
                     }
                   },
                   child: Text(
