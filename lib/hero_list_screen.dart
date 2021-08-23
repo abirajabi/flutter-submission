@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:submission_dicoding/hero_detail_screen.dart';
+import 'package:submission_dicoding/model/const.dart';
 import 'package:submission_dicoding/model/heroes.dart';
 
 class HeroListScreen extends StatelessWidget {
@@ -155,8 +156,86 @@ class HeroGridView extends StatelessWidget {
 
   HeroGridView({required this.gridCount});
 
+  getMainHeroAttr(mainAttr) {
+    switch (mainAttr) {
+      case 'Strength':
+        {
+          return 'images/attributes/hero_strength.png';
+        }
+      case 'Agility':
+        {
+          return 'images/attributes/hero_agility.png';
+        }
+      case 'Intelligence':
+        {
+          return 'images/attributes/hero_intelligence.png';
+        }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scrollbar(
+        isAlwaysShown: true,
+        child: Padding(
+          padding: EdgeInsets.all(24.0),
+          child: GridView.count(
+            crossAxisCount: gridCount,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            children: allHeroesList.map((hero) {
+              return Material(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return HeroDetailScreen(hero: hero);
+                    }));
+                  },
+                  child: Card(
+                    child: Container(
+                      color: Colors.blueAccent,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.asset(
+                            hero.imageAsset,
+                            fit: BoxFit.fill,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Image.asset(
+                                    getMainHeroAttr(hero.mainAttr),
+                                    width: 15,
+                                    height: 15,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    hero.name.toUpperCase(),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                    overflow: TextOverflow.visible,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ));
   }
 }
