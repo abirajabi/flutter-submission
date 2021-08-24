@@ -40,6 +40,15 @@ class HeroListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text('Dota 2 Heroes'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )),
       body: ListView.builder(
           itemCount: allHeroesList.length,
           itemBuilder: (context, index) {
@@ -181,8 +190,8 @@ class HeroGridView extends StatelessWidget {
           padding: EdgeInsets.all(24.0),
           child: GridView.count(
             crossAxisCount: gridCount,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0,
             children: allHeroesList.map((hero) {
               return Material(
                 child: InkWell(
@@ -192,9 +201,9 @@ class HeroGridView extends StatelessWidget {
                       return HeroDetailScreen(hero: hero);
                     }));
                   },
-                  child: Card(
-                    child: Container(
-                      color: Colors.blueAccent,
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Card(
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
